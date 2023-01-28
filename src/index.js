@@ -33,6 +33,9 @@ function draw(array) {
       let col = document.createElement("div");
       col.className = "col";
       row.appendChild(col);
+      if (array[i][j] !== 0) {
+        col.className = "col fill";
+      }
     }
   }
 }
