@@ -111,12 +111,23 @@ document.addEventListener("keydown", function (event) {
   if (key === "ArrowRight") {
     if (y < array2d[0].length - figure[0].length) {
       y = y + 1;
+
+      redraw();
     }
   }
 
   if (key === "ArrowLeft") {
     if (y > 0) {
       y = y - 1;
+
+      redraw();
+    }
+  }
+
+  if (key === "ArrowDown") {
+    if (x < array2d.length - figure.length) {
+      x = x + 1;
+      redraw();
     }
   }
 });
@@ -129,18 +140,21 @@ function putFigure(gameState, figure, x, y) {
   }
 }
 
+function redraw() {
+  clear();
+  let arrayCopy = copy(array2d);
+  putFigure(arrayCopy, figure, x, y);
+  draw(arrayCopy);
+}
+
 setInterval(
   function () {
-    clear();
-    let arrayCopy = copy(array2d);
-
     x = x + 1;
-    if (x >= arrayCopy.length - figure.length + 1) {
+    if (x >= array2d.length - figure.length + 1) {
       x = 0;
     }
 
-    putFigure(arrayCopy, figure, x, y);
-    draw(arrayCopy);
+    redraw();
   },
 
   1000
