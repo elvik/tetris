@@ -16,46 +16,33 @@ let array2d = [
   [0, 0, 0, 0, 0, 0, 0],
 ];
 
-let figure = [
-  [1, 1],
-  [1, 0],
-  [1, 0],
-  [1, 0],
+let x = 0;
+let y = 0;
+
+let figurePosition = 0;
+
+let figure1 = [
+  [
+    [1, 1],
+    [1, 0],
+    [1, 0],
+    [1, 0],
+  ],
+  [
+    [1, 1, 1, 1],
+    [0, 0, 0, 1],
+  ],
+  [
+    [0, 1],
+    [0, 1],
+    [0, 1],
+    [1, 1],
+  ],
+  [
+    [1, 0, 0, 0],
+    [1, 1, 1, 1],
+  ],
 ];
-
-// let figure1 = [
-//   [
-//     [0, 1, 1, 0],
-//     [0, 1, 0, 0],
-//     [0, 1, 0, 0],
-//     [0, 1, 0, 0],
-//   ],
-//   [
-//     [0, 0, 0, 0],
-//     [1, 1, 1, 1],
-//     [0, 0, 0, 1],
-//     [0, 0, 0, 0],
-//   ],
-//   [
-//     [0, 0, 1, 0],
-//     [0, 0, 1, 0],
-//     [0, 0, 1, 0],
-//     [0, 1, 1, 0],
-//   ],
-//   [
-//     [0, 0, 0, 0],
-//     [1, 0, 0, 0],
-//     [1, 1, 1, 1],
-//     [0, 0, 0, 0],
-//   ]
-// ];
-
-// let nextFigure = [
-//   [0, 0, 0, 0],
-//   [1, 1, 1, 1],
-//   [0, 0, 0, 0],
-//   [0, 0, 0, 0],
-// ]
 
 let gameArea = document.getElementById("gameArea");
 
@@ -99,17 +86,12 @@ function copy(array) {
   return result;
 }
 
-// draw(array2d);
-
-x = 0;
-y = 0;
-
 document.addEventListener("keydown", function (event) {
   const key = event.key;
   console.log("key", key);
 
   if (key === "ArrowRight") {
-    if (y < array2d[0].length - figure[0].length) {
+    if (y < array2d[0].length - figure1[figurePosition][0].length) {
       y = y + 1;
 
       redraw();
@@ -125,10 +107,18 @@ document.addEventListener("keydown", function (event) {
   }
 
   if (key === "ArrowDown") {
-    if (x < array2d.length - figure.length) {
+    if (x < array2d.length - figure1[figurePosition].length) {
       x = x + 1;
       redraw();
     }
+  }
+
+  if (key === "ArrowUp") {
+    figurePosition = figurePosition + 1;
+    if (figurePosition > 3) {
+      figurePosition = 0;
+    }
+    redraw();
   }
 });
 
@@ -143,14 +133,14 @@ function putFigure(gameState, figure, x, y) {
 function redraw() {
   clear();
   let arrayCopy = copy(array2d);
-  putFigure(arrayCopy, figure, x, y);
+  putFigure(arrayCopy, figure1[figurePosition], x, y);
   draw(arrayCopy);
 }
 
 setInterval(
   function () {
     x = x + 1;
-    if (x >= array2d.length - figure.length + 1) {
+    if (x >= array2d.length - figure1[figurePosition].length + 1) {
       x = 0;
     }
 
