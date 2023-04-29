@@ -1,6 +1,6 @@
 import "./styles.css";
 
-let array2d = [
+let areaState = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
@@ -91,23 +91,27 @@ document.addEventListener("keydown", function (event) {
   console.log("key", key);
 
   if (key === "ArrowRight") {
-    if (y < array2d[0].length - figure1[figurePosition][0].length) {
-      y = y + 1;
+    if (y < areaState[0].length - figure1[figurePosition][0].length) {
+      if (canPutFigure(areaState, figure1[figurePosition], x, y + 1)) {
+        y = y + 1;
 
-      redraw();
+        redraw();
+      }
     }
   }
 
   if (key === "ArrowLeft") {
     if (y > 0) {
-      y = y - 1;
+      if (canPutFigure(areaState, figure1[figurePosition], x, y - 1)) {
+        y = y - 1;
 
-      redraw();
+        redraw();
+      }
     }
   }
 
   if (key === "ArrowDown") {
-    if (x < array2d.length - figure1[figurePosition].length) {
+    if (x < areaState.length - figure1[figurePosition].length) {
       x = x + 1;
       redraw();
     }
@@ -125,23 +129,47 @@ document.addEventListener("keydown", function (event) {
 function putFigure(gameState, figure, x, y) {
   for (let row = 0; row < figure.length; row++) {
     for (let col = 0; col < figure[row].length; col++) {
-      gameState[x + row][y + col] = figure[row][col];
+      if (gameState[x + row][y + col] === 0) {
+        gameState[x + row][y + col] = figure[row][col];
+      }
     }
   }
 }
 
+function canPutFigure(gameState, figure, x, y) {
+  for (let row = 0; row < figure.length; row++) {
+    for (let col = 0; col < figure[row].length; col++) {
+      if (figure[row][col] && gameState[x + row][y + col]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function isEnd(gameState, figure, x) {
+  return x + 1 >= gameState.length - figure.length + 1;
+}
+
 function redraw() {
   clear();
-  let arrayCopy = copy(array2d);
+  let arrayCopy = copy(areaState);
   putFigure(arrayCopy, figure1[figurePosition], x, y);
   draw(arrayCopy);
 }
 
 setInterval(
   function () {
-    x = x + 1;
-    if (x >= array2d.length - figure1[figurePosition].length + 1) {
+    if (isEnd(areaState, figure1[figurePosition], x)) {
+      putFigure(areaState, figure1[figurePosition], x, y);
       x = 0;
+    } else {
+      if (!canPutFigure(areaState, figure1[figurePosition], x + 1, y)) {
+        putFigure(areaState, figure1[figurePosition], x, y);
+        x = 0;
+      } else {
+        x = x + 1;
+      }
     }
 
     redraw();
