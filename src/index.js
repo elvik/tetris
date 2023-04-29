@@ -112,8 +112,10 @@ document.addEventListener("keydown", function (event) {
 
   if (key === "ArrowDown") {
     if (x < areaState.length - figure1[figurePosition].length) {
-      x = x + 1;
-      redraw();
+      if (canPutFigure(areaState, figure1[figurePosition], x + 1, y)) {
+        x = x + 1;
+        redraw();
+      }
     }
   }
 
