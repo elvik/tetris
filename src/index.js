@@ -1,5 +1,7 @@
 import "./styles.css";
 
+const sound = new Audio("//drud.cz/downloads/gameover.mp3");
+
 let areaState = [
   [0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0],
@@ -17,7 +19,7 @@ let areaState = [
 ];
 
 let x = 0;
-let y = 0;
+let y = 3;
 
 let figure1 = [
   [
@@ -255,7 +257,7 @@ function redraw() {
   draw(arrayCopy);
 }
 
-setInterval(
+let interval = setInterval(
   function () {
     if (
       isEnd(areaState, getCurrentFigure(), x) ||
@@ -263,6 +265,7 @@ setInterval(
     ) {
       putFigure(areaState, getCurrentFigure(), x, y);
       x = 0;
+      y = 3;
       figureIndex = getRandomNumber(figures.length);
       figurePosition = getRandomNumber(figures[figureIndex].length);
     } else {
@@ -270,6 +273,13 @@ setInterval(
     }
 
     redraw();
+
+    if (!canPutFigure(areaState, getCurrentFigure(), x, y)) {
+      redraw();
+      document.getElementById("gameOver").style.display = "flex";
+      sound.play();
+      clearInterval(interval);
+    }
   },
 
   1000
