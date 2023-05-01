@@ -19,30 +19,117 @@ let areaState = [
 let x = 0;
 let y = 0;
 
-let figurePosition = 0;
-
 let figure1 = [
   [
     [1, 1],
     [1, 0],
     [1, 0],
-    [1, 0],
   ],
   [
-    [1, 1, 1, 1],
-    [0, 0, 0, 1],
+    [1, 1, 1],
+    [0, 0, 1],
   ],
   [
-    [0, 1],
     [0, 1],
     [0, 1],
     [1, 1],
   ],
   [
-    [1, 0, 0, 0],
-    [1, 1, 1, 1],
+    [1, 0, 0],
+    [1, 1, 1],
   ],
 ];
+
+let figure2 = [
+  [
+    [1, 0],
+    [1, 1],
+    [1, 0],
+  ],
+  [
+    [1, 1, 1],
+    [0, 1, 0],
+  ],
+  [
+    [0, 1],
+    [1, 1],
+    [0, 1],
+  ],
+  [
+    [0, 1, 0],
+    [1, 1, 1],
+  ],
+];
+
+let figure3 = [
+  [
+    [1, 1],
+    [1, 1],
+  ],
+];
+
+/* prettier-ignore */
+let figure4 = [
+  [
+    [1, 1, 1, 1],
+  ],
+  [
+    [1],
+    [1],
+    [1],
+    [1],
+  ],
+];
+
+let figure5 = [
+  [
+    [0, 1],
+    [1, 1],
+    [1, 0],
+  ],
+  [
+    [1, 1, 0],
+    [0, 1, 1],
+  ],
+];
+
+let figure6 = [
+  [
+    [1, 0],
+    [1, 1],
+    [0, 1],
+  ],
+  [
+    [0, 1, 1],
+    [1, 1, 0],
+  ],
+];
+
+let figure7 = [
+  [
+    [1, 1],
+    [0, 1],
+    [0, 1],
+  ],
+  [
+    [0, 0, 1],
+    [1, 1, 1],
+  ],
+  [
+    [1, 0],
+    [1, 0],
+    [1, 1],
+  ],
+  [
+    [1, 1, 1],
+    [1, 0, 0],
+  ],
+];
+
+let figures = [figure1, figure2, figure3, figure4, figure5, figure6, figure7];
+
+let figureIndex = getRandomNumber(figures.length);
+let figurePosition = getRandomNumber(figures[figureIndex].length);
 
 let gameArea = document.getElementById("gameArea");
 
@@ -51,6 +138,14 @@ let gameArea = document.getElementById("gameArea");
 // row.appendChild(col);
 // gameArea.appendChild(row);
 // array[i][j]
+
+function getCurrentFigure() {
+  return figures[figureIndex][figurePosition];
+}
+
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * max);
+}
 
 function draw(array) {
   for (let i = 0; i < array.length; i++) {
@@ -91,8 +186,8 @@ document.addEventListener("keydown", function (event) {
   console.log("key", key);
 
   if (key === "ArrowRight") {
-    if (y < areaState[0].length - figure1[figurePosition][0].length) {
-      if (canPutFigure(areaState, figure1[figurePosition], x, y + 1)) {
+    if (y < areaState[0].length - getCurrentFigure()[0].length) {
+      if (canPutFigure(areaState, getCurrentFigure(), x, y + 1)) {
         y = y + 1;
 
         redraw();
@@ -102,7 +197,7 @@ document.addEventListener("keydown", function (event) {
 
   if (key === "ArrowLeft") {
     if (y > 0) {
-      if (canPutFigure(areaState, figure1[figurePosition], x, y - 1)) {
+      if (canPutFigure(areaState, getCurrentFigure(), x, y - 1)) {
         y = y - 1;
 
         redraw();
@@ -111,8 +206,8 @@ document.addEventListener("keydown", function (event) {
   }
 
   if (key === "ArrowDown") {
-    if (x < areaState.length - figure1[figurePosition].length) {
-      if (canPutFigure(areaState, figure1[figurePosition], x + 1, y)) {
+    if (x < areaState.length - getCurrentFigure().length) {
+      if (canPutFigure(areaState, getCurrentFigure(), x + 1, y)) {
         x = x + 1;
         redraw();
       }
@@ -156,18 +251,20 @@ function isEnd(gameState, figure, x) {
 function redraw() {
   clear();
   let arrayCopy = copy(areaState);
-  putFigure(arrayCopy, figure1[figurePosition], x, y);
+  putFigure(arrayCopy, getCurrentFigure(), x, y);
   draw(arrayCopy);
 }
 
 setInterval(
   function () {
-    if (isEnd(areaState, figure1[figurePosition], x)) {
-      putFigure(areaState, figure1[figurePosition], x, y);
+    if (isEnd(areaState, getCurrentFigure(), x)) {
+      putFigure(areaState, getCurrentFigure(), x, y);
       x = 0;
+      figureIndex = getRandomNumber(figures.length);
+      figurePosition = getRandomNumber(figures[figureIndex].length);
     } else {
-      if (!canPutFigure(areaState, figure1[figurePosition], x + 1, y)) {
-        putFigure(areaState, figure1[figurePosition], x, y);
+      if (!canPutFigure(areaState, getCurrentFigure(), x + 1, y)) {
+        putFigure(areaState, getCurrentFigure(), x, y);
         x = 0;
       } else {
         x = x + 1;
