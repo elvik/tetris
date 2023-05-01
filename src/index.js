@@ -216,7 +216,7 @@ document.addEventListener("keydown", function (event) {
 
   if (key === "ArrowUp") {
     figurePosition = figurePosition + 1;
-    if (figurePosition > 3) {
+    if (figurePosition >= figures[figureIndex].length) {
       figurePosition = 0;
     }
     redraw();
@@ -257,18 +257,16 @@ function redraw() {
 
 setInterval(
   function () {
-    if (isEnd(areaState, getCurrentFigure(), x)) {
+    if (
+      isEnd(areaState, getCurrentFigure(), x) ||
+      !canPutFigure(areaState, getCurrentFigure(), x + 1, y)
+    ) {
       putFigure(areaState, getCurrentFigure(), x, y);
       x = 0;
       figureIndex = getRandomNumber(figures.length);
       figurePosition = getRandomNumber(figures[figureIndex].length);
     } else {
-      if (!canPutFigure(areaState, getCurrentFigure(), x + 1, y)) {
-        putFigure(areaState, getCurrentFigure(), x, y);
-        x = 0;
-      } else {
-        x = x + 1;
-      }
+      x = x + 1;
     }
 
     redraw();
