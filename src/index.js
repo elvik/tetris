@@ -21,6 +21,16 @@ let areaState = [
 let x = 0;
 let y = 3;
 
+const colors = [
+  "rgb(166, 39, 61)",
+  "rgb(49, 122, 54)",
+  "rgb(49, 93, 122)",
+  "rgb(66, 46, 105)",
+  "rgb(189, 96, 38)",
+  "rgb(204, 186, 49)",
+  "rgb(204, 49, 134)",
+];
+
 let figure1 = [
   [
     [1, 1],
@@ -44,87 +54,87 @@ let figure1 = [
 
 let figure2 = [
   [
-    [1, 0],
-    [1, 1],
-    [1, 0],
+    [2, 0],
+    [2, 2],
+    [2, 0],
   ],
   [
-    [1, 1, 1],
-    [0, 1, 0],
+    [2, 2, 2],
+    [0, 2, 0],
   ],
   [
-    [0, 1],
-    [1, 1],
-    [0, 1],
+    [0, 2],
+    [2, 2],
+    [0, 2],
   ],
   [
-    [0, 1, 0],
-    [1, 1, 1],
+    [0, 2, 0],
+    [2, 2, 2],
   ],
 ];
 
 let figure3 = [
   [
-    [1, 1],
-    [1, 1],
+    [3, 3],
+    [3, 3],
   ],
 ];
 
 /* prettier-ignore */
 let figure4 = [
   [
-    [1, 1, 1, 1],
+    [4, 4, 4, 4],
   ],
   [
-    [1],
-    [1],
-    [1],
-    [1],
+    [4],
+    [4],
+    [4],
+    [4],
   ],
 ];
 
 let figure5 = [
   [
-    [0, 1],
-    [1, 1],
-    [1, 0],
+    [0, 5],
+    [5, 5],
+    [5, 0],
   ],
   [
-    [1, 1, 0],
-    [0, 1, 1],
+    [5, 5, 0],
+    [0, 5, 5],
   ],
 ];
 
 let figure6 = [
   [
-    [1, 0],
-    [1, 1],
-    [0, 1],
+    [6, 0],
+    [6, 6],
+    [0, 6],
   ],
   [
-    [0, 1, 1],
-    [1, 1, 0],
+    [0, 6, 6],
+    [6, 6, 0],
   ],
 ];
 
 let figure7 = [
   [
-    [1, 1],
-    [0, 1],
-    [0, 1],
+    [7, 7],
+    [0, 7],
+    [0, 7],
   ],
   [
-    [0, 0, 1],
-    [1, 1, 1],
+    [0, 0, 7],
+    [7, 7, 7],
   ],
   [
-    [1, 0],
-    [1, 0],
-    [1, 1],
+    [7, 0],
+    [7, 0],
+    [7, 7],
   ],
   [
-    [1, 1, 1],
-    [1, 0, 0],
+    [7, 7, 7],
+    [7, 0, 0],
   ],
 ];
 
@@ -134,12 +144,6 @@ let figureIndex = getRandomNumber(figures.length);
 let figurePosition = getRandomNumber(figures[figureIndex].length);
 
 let gameArea = document.getElementById("gameArea");
-
-// document.createElement("div")
-// col.className = "col";
-// row.appendChild(col);
-// gameArea.appendChild(row);
-// array[i][j]
 
 function getCurrentFigure() {
   return figures[figureIndex][figurePosition];
@@ -159,7 +163,7 @@ function draw(array) {
       col.className = "col";
       row.appendChild(col);
       if (array[i][j] !== 0) {
-        col.className = "col fill";
+        col.style.backgroundColor = colors[array[i][j] - 1];
       }
     }
   }

@@ -21,13 +21,6 @@ body {
   background-color: white;
 }
 
-.col:not(:last-child) {
-}
-
-.col.fill {
-  background-color: rgb(248, 4, 86);
-}
-
 #gameOver {
   color: white;
   font-size: 50px;
