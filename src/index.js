@@ -177,14 +177,47 @@ function clear() {
 
 function copy(array) {
   let result = [];
-  for (var i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     let row = [];
-    for (var j = 0; j < array[i].length; j++) {
+    for (let j = 0; j < array[i].length; j++) {
       row[j] = array[i][j];
     }
     result[i] = row;
   }
   return result;
+}
+
+function removeFullLines(gameState) {
+  let newGameState = [];
+  for (let i = 0; i < gameState.length; i++) {
+    let row = [];
+    for (let j = 0; j < gameState[j].length; j++) {
+      row.push(0);
+    }
+    newGameState.push(row);
+  }
+
+  let currentLine = gameState.length - 1;
+  for (let i = gameState.length - 1; i >= 0; i--) {
+    let isFull = true;
+    for (let j = 0; j < gameState[i].length; j++) {
+      if (gameState[i][j] == 0) {
+        isFull = false;
+      }
+    }
+
+    if (isFull) {
+      continue;
+    }
+
+    for (let j = 0; j < gameState[i].length; j++) {
+      newGameState[currentLine][j] = gameState[i][j];
+    }
+
+    currentLine = currentLine - 1;
+  }
+
+  return newGameState;
 }
 
 document.addEventListener("keydown", function (event) {
@@ -268,6 +301,9 @@ let interval = setInterval(
       !canPutFigure(areaState, getCurrentFigure(), x + 1, y)
     ) {
       putFigure(areaState, getCurrentFigure(), x, y);
+
+      areaState = removeFullLines(areaState);
+
       x = 0;
       y = 3;
       figureIndex = getRandomNumber(figures.length);
